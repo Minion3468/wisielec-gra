@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+<body onload="start()">
+    <div id="calosc">
+        <div id="Nagłówek"><header>Wisielec</header></div>
+        <div id="hasło" style="letter-spacing:10px;">__________</div>
+        <div id="obraz">
+            <img src="0.png" id="wisielec">
+        </div>
+        <div id="licznik">Próby</div>
+        <div id="lokacja_klawiatury">
+        <div id="klawiatura" ></div>
+        </div>
+
+    </div>
+    
+
+
+
+
+    <script>
+        var hasło;
+        var lock = Array();
+        var strzały;
+        var limit = 8;
+        function start()
+        { 
+            let cokolwiek = Array()
+      for(A = 65; A < 91; A++)
+        {
+          cokolwiek.push(String.fromCharCode(A))   
+        }
+
+      for(let A=0; A < cokolwiek.length; A++) 
+        {
+          let przycisk = document.createElement("przycisk");
+          przycisk.innerHTML = cokolwiek[A];
+          document.body.appendChild(przycisk);
+          przycisk.addEventListener("click", litery);
+          document.getElementById("klawiatura");
+          przycisk.classList.add('alfabet');
+        }  
+        
+        
+        hasło = prompt("Prosze podać hasło:");
+        hasło = hasło.toUpperCase();
+        lock = new Array(hasło.length);
+        lock.fill(true);
+        document.getElementById('hasło').innerHTML = maska();
+        strzały = 0;
+        document.getElementById('licznik').innerHTML = "Próby" + strzały + "/" + limit;
+        document.getElementById('obraz').src = strzały + ".png";
+        
+        }
+        function litery(event){
+            let success = false;
+            let char = event.srcElement.innerHTML;
+            let  sign = hasło.split("");
+            for (let i = 0; i < sign.length; i++){
+                if(sign[i] == char){
+                    lock[i] = false;
+                    success = true;
+                }
+            }
+            document.getElementById('hasło').innerHTML = maska();
+            event.srcElement.disabled = true;
+            if(!success)
+            {
+                strzały++;
+                document.getElementById('licznik').innerHTML = "Próby" + strzały + "/" + limit;
+                document.getElementById('obraz').src = strzały + ".png";
+            }
+            if(porażka())
+            {
+                alert("Przegrałeś! prawidłowym hasłem było " + hasło);
+            }
+            if(zwycięstwo())
+            {
+                alert("Wygrałeś! Udało ci się podać prawidłowe hasło");
+            }
+        }    
+        
+            function porażka()
+            {
+                if(strzały >= limit){
+                    return true;
+
+                
+                }else return false
+            }
+            
+            
+            function zwycięstwo(){
+                for(let i = 0; i < lock.length; i++){
+                    if(lock[i] == true)
+                    return false;
+
+                }
+                return true;
+            }
+            
+
+        
+        
+        
+
+
+
+        function maska() {
+            let sign = hasło.split("");
+            let zasłonięte = Array();
+            for(let i = 0; i < sign.length; i++) {
+                if(lock[i])
+                    zasłonięte.push("_");
+                else
+                    zasłonięte.push(sign[i]);
+            }
+            let mabc = zasłonięte.join("");
+            return mabc;
+        }
+        
+        
+    
+    </script>
+    <style>
+        header{
+            font-size: 75px;
+        }
+        #Nagłówek{
+            width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #obraz{
+            float: left;
+            width: 450px;
+            text-align: center;
+            min-height: 280px;
+            text-align: center;
+        }
+        .alfabet{
+            letter-spacing: 2px;
+            border: black solid 2px;
+            background-color: grey;
+            font-size: 35px;
+            padding: 3px;
+            margin: 3px;
+        }
+        #lokacja_klawiatury{
+            width: 250px;
+            height: 250px;
+            margin-right: 50px;
+        }
+       
+       
+    </style>   
+    
+</body>
+</html>
